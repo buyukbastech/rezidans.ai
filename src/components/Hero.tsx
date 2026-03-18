@@ -4,70 +4,52 @@ import { useEffect, useRef, useState } from "react";
 import vid01 from "@/assets/01.mp4";
 import vid02 from "@/assets/02.mp4";
 import vid03 from "@/assets/03.mp4";
+import heroPoster from "@/assets/hero-building.jpg";
 
 const videos = [vid01, vid02, vid03];
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [nextIndex, setNextIndex] = useState(1);
-  const [fading, setFading] = useState(false);
-  const currentRef = useRef<HTMLVideoElement>(null);
-  const nextRef = useRef<HTMLVideoElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   // Her video 5 saniye çalışır, sonra bir sonrakine geçer
   useEffect(() => {
-    const upcoming = (currentIndex + 1) % videos.length;
-    setNextIndex(upcoming);
+    // Mevcut videoyu oynat
+    const currentVideo = videoRefs.current[currentIndex];
+    if (currentVideo) {
+      currentVideo.currentTime = 0;
+      currentVideo.play().catch(() => console.log("Otomatik oynatma bekliyor."));
+    }
 
-    // 4. saniyede fade başlar (1 sn geçiş süresi)
-    const fadeTimer = setTimeout(() => {
-      setFading(true);
-    }, 4000);
-
-    // 5. saniyede yeni videoyu aktif et
+    // 5 saniye sonra bir sonrakine geç
     const switchTimer = setTimeout(() => {
-      setCurrentIndex(upcoming);
-      setFading(false);
+      setCurrentIndex((prev) => (prev + 1) % videos.length);
     }, 5000);
 
     return () => {
-      clearTimeout(fadeTimer);
       clearTimeout(switchTimer);
     };
   }, [currentIndex]);
 
-  useEffect(() => {
-    if (nextRef.current) {
-      nextRef.current.load();
-    }
-  }, [nextIndex]);
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background video slideshow with overlay */}
-      <div className="absolute inset-0">
-        {/* Current video */}
-        <video
-          key={`current-${currentIndex}`}
-          ref={currentRef}
-          src={videos[currentIndex]}
-          autoPlay
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
-          style={{ opacity: fading ? 0 : 1 }}
-        />
-        {/* Next video (preloaded, fades in) */}
-        <video
-          key={`next-${nextIndex}`}
-          ref={nextRef}
-          src={videos[nextIndex]}
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
-          style={{ opacity: fading ? 1 : 0 }}
-        />
+      <div className="absolute inset-0 bg-black">
+        {videos.map((vid, index) => (
+          <video
+            key={vid}
+            ref={(el) => (videoRefs.current[index] = el)}
+            src={vid}
+            autoPlay={index === currentIndex}
+            muted
+            playsInline
+            preload={index === 0 || index === 1 ? "auto" : "metadata"}
+            poster={index === 0 ? heroPoster : undefined}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          />
+        ))}
       </div>
 
       {/* Content */}
