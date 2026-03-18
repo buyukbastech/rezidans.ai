@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 40 10% 85%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 40 10% 85%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 40 10% 85%;
+
+    --primary: 28 72% 52%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 40 10% 85%;
+
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 50%;
+
+    --accent: 28 72% 52%;
+    --accent-foreground: 0 0% 4%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 28 72% 52%;
+
+    --radius: 0.25rem;
+
+    --copper: 28 72% 52%;
+    --copper-light: 32 65% 62%;
+    --copper-dark: 24 78% 38%;
+    --obsidian: 0 0% 4%;
+    --obsidian-light: 0 0% 10%;
+    --glass: 0 0% 100%;
+
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 40 10% 85%;
+    --sidebar-primary: 28 72% 52%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 40 10% 85%;
+    --sidebar-border: 0 0% 16%;
+    --sidebar-ring: 28 72% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-sm border border-border;
+    background: hsla(var(--glass) / 0.04);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+  }
+
+  .copper-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--copper-dark)),
+      hsl(var(--copper)),
+      hsl(var(--copper-light))
+    );
+  }
+
+  .copper-text {
+    color: #ffad00;
+  }
+
+  .copper-line {
+    @apply h-[2px] w-full transition-all duration-700;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      #ffad00,
+      transparent
+    );
+  }
+
+  .heading-display {
+    @apply uppercase;
+    letter-spacing: 0.3em;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .heading-hero {
+    @apply uppercase font-light;
+    letter-spacing: 0.2em;
+    font-family: 'Cormorant Garamond', serif;
+  }
+}
