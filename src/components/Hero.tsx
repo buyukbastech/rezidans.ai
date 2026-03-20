@@ -96,12 +96,15 @@ const Hero = () => {
           transition={{ duration: 1, delay: 1.8 }}
           className="mt-16"
         >
-          <button 
-            className="glass-card px-10 py-4 text-xs uppercase tracking-[0.4em] text-white hover:border-primary/50 transition-colors duration-700"
+          <a 
+            href="https://panel.rezidans.ai/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-card px-10 py-4 text-xs uppercase tracking-[0.4em] text-white hover:border-primary/50 transition-colors duration-700 inline-block"
             style={{ borderColor: '#ffad00' }}
           >
             GİRİŞ YAP
-          </button>
+          </a>
         </motion.div>
       </div>
 
