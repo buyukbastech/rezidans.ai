@@ -1,14 +1,9 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-
-const stats = [
-  { value: "12M+", label: "Veri Analizi" },
-  { value: "99.7%", label: "Yanıt Hızı" },
-  { value: "340+", label: "Aktif Entegrasyon" },
-  { value: "0", label: "Veri Kaybı" },
-];
+import { useLanguage } from "@/context/LanguageContext";
 
 const Stats = () => {
+  const { t, language } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -16,7 +11,7 @@ const Stats = () => {
     <section className="py-12 md:py-24 px-4 md:px-6 border-t border-b border-border">
       <div className="max-w-6xl mx-auto" ref={ref}>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-          {stats.map((stat, i) => (
+          {t.stats.map((stat, i) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 30 }}
@@ -32,7 +27,7 @@ const Stats = () => {
                 {stat.value}
               </p>
               <p className="heading-display text-[10px] text-muted-foreground mt-3 tracking-[0.4em]">
-                {stat.label.toUpperCase().replace('i', 'İ')}
+                {stat.label.toLocaleUpperCase(language === "tr" ? "tr-TR" : "en-US")}
               </p>
             </motion.div>
           ))}

@@ -1,8 +1,10 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import backgroundImage from "@/assets/hero-building.jpg";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Statement = () => {
+  const { t } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -30,9 +32,9 @@ const Statement = () => {
         >
           <div className="copper-line max-w-24 mx-auto mb-16" />
           <h2 className="heading-hero text-2xl sm:text-3xl md:text-5xl lg:text-6xl leading-tight text-foreground">
-            GAYRİMENKULÜN YAPAY ZEKASI.
+            {t.statement.line1}
             <br />
-            <span className="copper-text">DİJİTAL YÖNETİMİN GELECEĞİ.</span>
+            <span className="copper-text">{t.statement.line2}</span>
           </h2>
           <div className="copper-line max-w-24 mx-auto mt-16" />
         </motion.div>

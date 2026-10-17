@@ -1,55 +1,27 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
-import vid01 from "@/assets/01.mp4";
-import vid02 from "@/assets/02.mp4";
-import vid03 from "@/assets/03.mp4";
 import heroPoster from "@/assets/hero-building.jpg";
-
-const videos = [vid01, vid02, vid03];
+import QuoteDialog from "@/components/QuoteDialog";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Hero = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-
-  // Her video 5 saniye çalışır, sonra bir sonrakine geçer
-  useEffect(() => {
-    // Mevcut videoyu oynat
-    const currentVideo = videoRefs.current[currentIndex];
-    if (currentVideo) {
-      currentVideo.currentTime = 0;
-      currentVideo.play().catch(() => console.log("Otomatik oynatma bekliyor."));
-    }
-
-    // 5 saniye sonra bir sonrakine geç
-    const switchTimer = setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % videos.length);
-    }, 5000);
-
-    return () => {
-      clearTimeout(switchTimer);
-    };
-  }, [currentIndex]);
+  const { t } = useLanguage();
+  const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background video slideshow with overlay */}
-      <div className="absolute inset-0 bg-black">
-        {videos.map((vid, index) => (
-          <video
-            key={vid}
-            ref={(el) => (videoRefs.current[index] = el)}
-            src={vid}
-            autoPlay={index === currentIndex}
-            muted
-            playsInline
-            preload={index === 0 || index === 1 ? "auto" : "metadata"}
-            poster={index === 0 ? heroPoster : undefined}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
-          />
-        ))}
+      {/* Background Banner Image */}
+      <div className="absolute inset-0 z-0 bg-black">
+        <motion.img
+          initial={{ scale: 1.05, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          src={heroPoster}
+          alt="Rezidans AI Banner"
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/25 to-black/80 pointer-events-none" />
       </div>
 
       {/* Content */}
@@ -60,7 +32,7 @@ const Hero = () => {
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="heading-display text-xs text-white mb-8 tracking-[0.5em]">
-            OTOMATİK PRESTİJ
+            {t.hero.tagline}
           </p>
         </motion.div>
 
@@ -70,8 +42,8 @@ const Hero = () => {
           transition={{ duration: 1.4, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="heading-hero text-5xl sm:text-6xl md:text-8xl lg:text-9xl mb-8"
         >
-          <span className="copper-text">REZIDANS</span>
-          <span className="text-white">AI</span>
+          <span className="copper-text">{t.hero.brandFirst}</span>
+          <span className="text-white">{t.hero.brandSecond}</span>
         </motion.h1>
 
         <motion.div
@@ -87,7 +59,7 @@ const Hero = () => {
           transition={{ duration: 1.2, delay: 1.2 }}
           className="text-white text-sm md:text-base font-light tracking-[0.2em] uppercase max-w-lg mx-auto"
         >
-          YAPAY ZEKANIN MİMARİ MÜKEMMELLİKLE BULUŞTUĞU NOKTA
+          {t.hero.subtitle}
         </motion.p>
 
         <motion.div
@@ -96,17 +68,18 @@ const Hero = () => {
           transition={{ duration: 1, delay: 1.8 }}
           className="mt-16"
         >
-          <a 
-            href="https://panel.rezidans.ai/login"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glass-card px-10 py-4 text-xs uppercase tracking-[0.4em] text-white hover:border-primary/50 transition-colors duration-700 inline-block"
+          <button 
+            type="button"
+            onClick={() => setIsQuoteOpen(true)}
+            className="glass-card px-10 py-4 text-xs uppercase tracking-[0.4em] text-white hover:border-primary/50 transition-all duration-700 inline-block cursor-pointer hover:shadow-[0_0_30px_rgba(255,173,0,0.3)] active:scale-95"
             style={{ borderColor: '#ffad00' }}
           >
-            GİRİŞ YAP
-          </a>
+            {t.hero.cta}
+          </button>
         </motion.div>
       </div>
+
+      <QuoteDialog open={isQuoteOpen} onOpenChange={setIsQuoteOpen} />
 
       {/* Bottom fade indicator */}
       <motion.div

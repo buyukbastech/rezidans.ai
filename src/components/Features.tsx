@@ -1,27 +1,6 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-
-const features = [
-  {
-    number: "01",
-    title: "AKILLI SİSTEM",
-    description:
-      "Potansiyel müşterilerinizden gelen mesajları ve aramaları 7/24 anlık olarak analiz eden, yapay zeka tabanlı otomatik yanıt ve asistan çözümleri.",
-  },
-  {
-    number: "02",
-    title: "OTONOM YÖNETİM",
-    description:
-      "İlan süreçlerinden gelen verileri sıfır insan hatasıyla sınıflandıran, müşteri yolculuğunu uçtan uca yöneten akıllı takip mekanizması.",
-  },
-  {
-    number: "03",
-    title: "YAŞAYAN ZEKA",
-    description:
-      "Piyasa hareketlerini ve ilan performanslarını izleyerek, her etkileşimden öğrenen ve en doğru satış stratejisini geliştiren öğrenen algoritmalar.",
-  },
-];
+import { useLanguage } from "@/context/LanguageContext";
 
 const FeatureCard = ({
   number,
@@ -64,6 +43,7 @@ const FeatureCard = ({
 };
 
 const Features = () => {
+  const { t } = useLanguage();
   const headingRef = useRef(null);
   const isHeadingInView = useInView(headingRef, { once: true, margin: "-100px" });
 
@@ -78,15 +58,15 @@ const Features = () => {
           className="text-center mb-24"
         >
           <p className="heading-display text-xs text-muted-foreground tracking-[0.5em] mb-6">
-            SİSTEM YAPISI
+            {t.features.category}
           </p>
           <h2 className="heading-hero text-3xl md:text-5xl lg:text-6xl text-foreground">
-            TASARIMIN ZEKASI
+            {t.features.heading}
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {features.map((feature, i) => (
+          {t.features.items.map((feature, i) => (
             <FeatureCard key={feature.number} {...feature} index={i} />
           ))}
         </div>
