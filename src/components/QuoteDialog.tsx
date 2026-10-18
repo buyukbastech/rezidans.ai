@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { CheckCircle2, ArrowRight, Loader2 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-import { supabase } from "@/lib/supabase";
+import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 interface QuoteDialogProps {
   open: boolean;
@@ -33,6 +33,11 @@ export const QuoteDialog = ({ open, onOpenChange }: QuoteDialogProps) => {
     e.preventDefault();
     if (!formData.companyName || !formData.email || !formData.problem) {
       toast.error(t.quoteDialog.errorFillAll);
+      return;
+    }
+
+    if (!isSupabaseConfigured) {
+      toast.error("Form bağlantısı henüz yapılandırılmadı. Lütfen daha sonra tekrar deneyin.");
       return;
     }
 

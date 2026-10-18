@@ -3,8 +3,11 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Supabase URL veya Anon Key eksik. Lütfen .env dosyasını kontrol edin.');
-}
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Do not let missing production environment variables blank the public site.
+// Forms can use isSupabaseConfigured to surface a useful configuration message.
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder.supabase.co',
+  supabaseAnonKey || 'placeholder-anon-key',
+);
