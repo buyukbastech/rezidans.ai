@@ -50,7 +50,7 @@ export const translations = {
           number: "02",
           title: "OTONOM YÖNETİM",
           description:
-            "İlan süreçlerinden gelen verileri sıfır insan hatasıyla sınıflandıran, müşteri yolculuğunu uçtan uca yöneten akıllı takip mekanizması.",
+            "Dağınık ilan süreçlerini tek merkezde toplayan, potansiyel müşterileri düzenli takip eden ve hiçbir fırsatın gözden kaçmaması için satış sürecini optimize eden akıllı yönetim sistemi.",
         },
         {
           number: "03",
