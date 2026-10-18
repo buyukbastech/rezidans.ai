@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { CheckCircle2, ArrowRight, Loader2 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { supabase } from "@/lib/supabase";
 
 interface QuoteDialogProps {
   open: boolean;
@@ -28,7 +29,7 @@ export const QuoteDialog = ({ open, onOpenChange }: QuoteDialogProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.companyName || !formData.email || !formData.problem) {
       toast.error(t.quoteDialog.errorFillAll);
@@ -37,12 +38,22 @@ export const QuoteDialog = ({ open, onOpenChange }: QuoteDialogProps) => {
 
     setIsSubmitting(true);
 
-    // Form submission simulation
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      toast.success(t.quoteDialog.successToast);
-    }, 700);
+    const { error } = await supabase.from("leads").insert({
+      company_name: formData.companyName,
+      email: formData.email,
+      problem: formData.problem,
+    });
+
+    setIsSubmitting(false);
+
+    if (error) {
+      console.error("Supabase insert error:", error);
+      toast.error("Bir hata oluştu, lütfen tekrar deneyin.");
+      return;
+    }
+
+    setIsSuccess(true);
+    toast.success(t.quoteDialog.successToast);
   };
 
   const handleClose = (newOpen: boolean) => {
